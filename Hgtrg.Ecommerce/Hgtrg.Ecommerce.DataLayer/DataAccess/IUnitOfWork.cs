@@ -17,12 +17,16 @@ namespace Hgtrg.Ecommerce.DataLayer.DataAccess
         private readonly HgtrgEcommerceContext _dbContext;
         private IDbContextTransaction _transaction;
         private readonly Dictionary<Type, object> _repositories;
+        //private readonly IRepository<User> _userRepository;
 
         public UnitOfWork(HgtrgEcommerceContext dbContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             _repositories = new Dictionary<Type, object>();
+            //_userRepository = new Repository<User>(_dbContext);
         }
+
+        //public IRepository<User> UserRepository => _userRepository;
 
         public IRepository<TEntity> GetRepository<TEntity>() where TEntity : class
         {
