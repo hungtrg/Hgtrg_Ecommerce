@@ -1,20 +1,30 @@
-﻿//using Hgtrg.Ecommerce.DataLayer.DataAccess;
-//using Hgtrg.Ecommerce.DataLayer.Models;
-//using Microsoft.EntityFrameworkCore;
+﻿using Hgtrg.Ecommerce.DataLayer.DataAccess;
+using Hgtrg.Ecommerce.DataLayer.Models;
 
-//namespace Hgtrg.Ecommerce.DataLayer.Repositories
-//{
-//    public interface IUserRepository : IRepository<User>
-//    {
-//        // Define any additional methods specific to the customer entity here
-//    }
+namespace Hgtrg.Ecommerce.DataLayer.Repositories
+{
+    public interface IUserRepository : IGenericRepository<User>
+    {
+        User GetUserById(int userId);
+        IEnumerable<User> GetUserByUsername(string username);
+    }
 
-//    public class UserRepository : Repository<User>, IUserRepository
-//    {
-//        public UserRepository(DbContext dbContext) : base(dbContext)
-//        {
-//        }
+    public class UserRepository : GenericRepository<User>, IUserRepository
+    {
+        public UserRepository(IUnitOfWork<HgtrgEcommerceContext> unitOfWork)
+            : base(unitOfWork)
+        {
+        }
 
-//        // Other methods specific to the customer entity can be defined here
-//    }
-//}
+        public User GetUserById(int userId)
+        {
+            return Context.Users.First(u => u.UserId == userId);
+        }
+
+        public IEnumerable<User> GetUserByUsername(string username)
+        {
+            var user = Context.Users.Where(x => x.Username == username).ToList();
+            return user;
+        }
+    }
+}

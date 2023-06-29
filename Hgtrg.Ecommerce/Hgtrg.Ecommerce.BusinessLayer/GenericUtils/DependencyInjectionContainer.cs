@@ -1,8 +1,7 @@
 ﻿using Hgtrg.Ecommerce.BusinessLayer.Services;
 using Hgtrg.Ecommerce.DataLayer.DataAccess;
 using Hgtrg.Ecommerce.DataLayer.Models;
-//using Hgtrg.Ecommerce.DataLayer.Repositories;
-using Microsoft.EntityFrameworkCore;
+using Hgtrg.Ecommerce.DataLayer.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Hgtrg.Ecommerce.BusinessLayer.GenericUtils
@@ -11,9 +10,9 @@ namespace Hgtrg.Ecommerce.BusinessLayer.GenericUtils
     {
         public static void InitializerDI(this IServiceCollection services)
         {
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<DbContext, HgtrgEcommerceContext>();
+            services.AddScoped<IUnitOfWork<HgtrgEcommerceContext>, UnitOfWork<HgtrgEcommerceContext>>();
 
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserServices, UserServices>();
         }
     }

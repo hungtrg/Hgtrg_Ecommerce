@@ -1,59 +1,136 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Hgtrg.Ecommerce.DataLayer.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Hgtrg.Ecommerce.DataLayer.DataAccess
 {
-    public interface IRepository<TEntity> where TEntity : class
+    public interface IGenericRepository<TEntity> where TEntity : class
     {
-        Task<TEntity> GetByIdAsync(int id);
-        Task<IEnumerable<TEntity>> GetAllAsync();
-        Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
-        void Add(TEntity entity);
-        void Update(TEntity entity);
+        IEnumerable<TEntity> GetAll();
+        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
+        TEntity GetById(int id);
+        TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate);
+        TEntity Update(TEntity entity);
+        Task<TEntity> AddAsync(TEntity entity);
         void Remove(TEntity entity);
     }
 
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+    public class GenericRepository<TEntity> : IGenericRepository<TEntity>, IDisposable where TEntity : class
     {
-        private readonly DbContext _dbContext;
-        private readonly DbSet<TEntity> _dbSet;
+        private bool _isDisposed;
+        private DbSet<TEntity> _dbSet;
 
-        public Repository(DbContext dbContext)
+        public GenericRepository(IUnitOfWork<HgtrgEcommerceContext> unitOfWork)
         {
-            _dbContext = dbContext;
-            _dbSet = dbContext.Set<TEntity>();
+            Context = unitOfWork.Context;
+        }
+        public HgtrgEcommerceContext Context { get; set; }
+
+        private DbSet<TEntity> Entities
+        {
+            get { return _dbSet ?? (_dbSet = Context.Set<TEntity>()); }
         }
 
-        public async Task<TEntity> GetByIdAsync(int id)
+        public void Dispose()
+        {
+            if (Context != null)
+                Context.Dispose();
+            _isDisposed = true;
+        }
+
+        public IEnumerable<TEntity> GetAll()
+        {
+            return Entities.ToList();
+        }
+
+        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+        {
+            return Entities.Where(predicate).ToList();
+        }
+
+        public TEntity GetById(int id)
         {
 #pragma warning disable CS8603 // Possible null reference return.
-            return await _dbSet.FindAsync(id);
+            return Entities.Find(id);
 #pragma warning restore CS8603 // Possible null reference return.
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        public TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate)
         {
-            return await _dbSet.ToListAsync();
+#pragma warning disable CS8603 // Possible null reference return.
+            return Entities.Where(predicate).FirstOrDefault();
+#pragma warning restore CS8603 // Possible null reference return.
         }
 
-        public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
+        public TEntity Update(TEntity entity)
         {
-            return await _dbSet.Where(predicate).ToListAsync();
+            try
+            {
+                if (entity == null)
+                {
+                    throw new ArgumentNullException("Entity");
+                }
+
+                if (Context == null || _isDisposed)
+                {
+                    Context = new HgtrgEcommerceContext();
+                }
+                Context.Entry(entity).State = EntityState.Modified;
+                // SaveChanges as Context save changes will called with Unit of work
+
+                return entity;
+            }
+            catch (Exception)
+            {
+                throw new Exception();
+            }
         }
 
-        public void Add(TEntity entity)
+        public async Task<TEntity> AddAsync(TEntity entity)
         {
-            _dbSet.Add(entity);
-        }
+            try
+            {
+                if (entity == null)
+                {
+                    throw new ArgumentNullException("Entity");
+                }
 
-        public void Update(TEntity entity)
-        {
-            _dbSet.Update(entity);
+                if (Context == null || _isDisposed)
+                {
+                    Context = new HgtrgEcommerceContext();
+                }
+                var result = await Entities.AddAsync(entity);
+                // SaveChanges as Context save changes will called with Unit of work
+
+                return result.Entity;
+            }
+            catch (Exception)
+            {
+                throw new Exception();
+            }
         }
 
         public void Remove(TEntity entity)
         {
-            _dbSet.Remove(entity);
+            try
+            {
+                if (entity == null)
+                {
+                    throw new ArgumentNullException("Entity");
+                }
+
+                if (Context == null || _isDisposed)
+                {
+                    Context = new HgtrgEcommerceContext();
+                }
+                Entities.Remove(entity);
+
+                // SaveChanges as Context save changes will called with Unit of work
+            }
+            catch (Exception)
+            {
+                throw new Exception();
+            }
         }
     }
 }

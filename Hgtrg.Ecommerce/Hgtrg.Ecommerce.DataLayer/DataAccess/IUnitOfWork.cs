@@ -1,49 +1,53 @@
-﻿using Hgtrg.Ecommerce.DataLayer.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Hgtrg.Ecommerce.DataLayer.DataAccess
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork<out TContext> where TContext : DbContext, new()
     {
-        IRepository<TEntity> GetRepository<TEntity>() where TEntity : class;
+        TContext Context { get; }
+        void BeginTransaction();
         Task BeginTransactionAsync();
+        void CommitTransaction();
         Task CommitTransactionAsync();
+        void RollbackTransaction();
         Task RollbackTransactionAsync();
-        Task<int> SaveChangesAsync();
+        void SaveChanges();
+        Task SaveChangesAsync();
     }
 
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork<TContext> : IUnitOfWork<TContext>, IDisposable where TContext : DbContext, new()
     {
-        private readonly HgtrgEcommerceContext _dbContext;
+        private bool _disposed;
         private IDbContextTransaction _transaction;
-        private readonly Dictionary<Type, object> _repositories;
-        //private readonly IRepository<User> _userRepository;
 
-        public UnitOfWork(HgtrgEcommerceContext dbContext)
+        public UnitOfWork()
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-            _repositories = new Dictionary<Type, object>();
-            //_userRepository = new Repository<User>(_dbContext);
+            Context = new TContext();
+            _disposed = false;
         }
 
-        //public IRepository<User> UserRepository => _userRepository;
-
-        public IRepository<TEntity> GetRepository<TEntity>() where TEntity : class
+        public void Dispose()
         {
-            if (_repositories.TryGetValue(typeof(TEntity), out var repository))
-            {
-                return (IRepository<TEntity>)repository;
-            }
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
-            var newRepository = new Repository<TEntity>(_dbContext);
-            _repositories.Add(typeof(TEntity), newRepository);
+        public TContext Context { get; }
 
-            return newRepository;
+        public void BeginTransaction()
+        {
+            _transaction = Context.Database.BeginTransaction();
         }
 
         public async Task BeginTransactionAsync()
         {
-            _transaction = await _dbContext.Database.BeginTransactionAsync();
+            _transaction = await Context.Database.BeginTransactionAsync();
+        }
+
+        public void CommitTransaction()
+        {
+            _transaction.Commit();
         }
 
         public async Task CommitTransactionAsync()
@@ -51,19 +55,32 @@ namespace Hgtrg.Ecommerce.DataLayer.DataAccess
             await _transaction.CommitAsync();
         }
 
+        public void RollbackTransaction()
+        {
+            _transaction.Rollback();
+        }
+
         public async Task RollbackTransactionAsync()
         {
             await _transaction.RollbackAsync();
         }
 
-        public async Task<int> SaveChangesAsync()
+        public void SaveChanges()
         {
-            return await _dbContext.SaveChangesAsync();
+            Context.SaveChanges();
         }
 
-        public void Dispose()
+        public async Task SaveChangesAsync()
         {
-            _dbContext.Dispose();
+            await Context.SaveChangesAsync();
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!_disposed)
+                if (disposing)
+                    Context.Dispose();
+            _disposed = true;
         }
     }
 }

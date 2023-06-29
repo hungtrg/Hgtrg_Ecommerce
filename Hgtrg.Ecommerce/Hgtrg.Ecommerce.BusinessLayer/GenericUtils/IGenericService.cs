@@ -1,61 +1,64 @@
 ﻿using Hgtrg.Ecommerce.DataLayer.DataAccess;
+using Hgtrg.Ecommerce.DataLayer.Models;
 using System.Linq.Expressions;
 
 namespace Hgtrg.Ecommerce.BusinessLayer.GenericUtils
 {
-    public interface IService<TEntity> where TEntity : class
+    public interface IGenericService<TEntity> where TEntity : class
     {
-        Task<TEntity> GetByIdAsync(int id);
-        Task<IEnumerable<TEntity>> GetAllAsync();
-        Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
+        IEnumerable<TEntity> GetAll();
+        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
+        TEntity GetById(int id);
+        TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate);
+        TEntity Update(TEntity entity);
         Task<TEntity> AddAsync(TEntity entity);
-        Task UpdateAsync(TEntity entity);
-        Task RemoveAsync(TEntity entity);
+        void Remove(TEntity entity);
     }
 
-    public class Service<TEntity> : IService<TEntity> where TEntity : class
+    public class GenericService<TEntity> : IGenericService<TEntity> where TEntity : class
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IRepository<TEntity> _repository;
+        private IUnitOfWork<HgtrgEcommerceContext> _unitOfWork;
+        private IGenericRepository<TEntity> _repository;
 
-        public Service(IUnitOfWork unitOfWork)
+        public GenericService(IUnitOfWork<HgtrgEcommerceContext> unitOfWork, IGenericRepository<TEntity> repository)
         {
             _unitOfWork = unitOfWork;
-            _repository = _unitOfWork.GetRepository<TEntity>();
+            _repository = repository;
         }
 
-        public async Task<TEntity> GetByIdAsync(int id)
+        public IEnumerable<TEntity> GetAll()
         {
-            return await _repository.GetByIdAsync(id);
+            return _repository.GetAll();
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
         {
-            return await _repository.GetAllAsync();
+            throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
+        public TEntity GetById(int id)
         {
-            return await _repository.FindAsync(predicate);
+            return _repository.GetById(id);
         }
 
-        public async Task<TEntity> AddAsync(TEntity entity)
+        public TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate)
         {
-            _repository.Add(entity);
-            await _unitOfWork.SaveChangesAsync();
-            return entity;
+            throw new NotImplementedException();
         }
 
-        public async Task UpdateAsync(TEntity entity)
+        public TEntity Update(TEntity entity)
         {
-            _repository.Update(entity);
-            await _unitOfWork.SaveChangesAsync();
+            throw new NotImplementedException();
         }
 
-        public async Task RemoveAsync(TEntity entity)
+        public Task<TEntity> AddAsync(TEntity entity)
         {
-            _repository.Remove(entity);
-            await _unitOfWork.SaveChangesAsync();
+            throw new NotImplementedException();
+        }
+
+        public void Remove(TEntity entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }
