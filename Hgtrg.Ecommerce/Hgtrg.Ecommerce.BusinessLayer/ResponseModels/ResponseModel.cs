@@ -1,4 +1,4 @@
-﻿namespace Hgtrg.Ecommerce.PresentationLayer.ViewModels.ResponseModels
+﻿namespace Hgtrg.Ecommerce.BusinessLayer.ResponseModels
 {
     public class Response
     {

@@ -11,7 +11,7 @@ namespace Hgtrg.Ecommerce.DataLayer.DataAccess
         TEntity GetById(int id);
         TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate);
         TEntity Update(TEntity entity);
-        Task<TEntity> AddAsync(TEntity entity);
+        TEntity Add(TEntity entity);
         void Remove(TEntity entity);
     }
 
@@ -86,7 +86,7 @@ namespace Hgtrg.Ecommerce.DataLayer.DataAccess
             }
         }
 
-        public async Task<TEntity> AddAsync(TEntity entity)
+        public TEntity Add(TEntity entity)
         {
             try
             {
@@ -99,7 +99,7 @@ namespace Hgtrg.Ecommerce.DataLayer.DataAccess
                 {
                     Context = new HgtrgEcommerceContext();
                 }
-                var result = await Entities.AddAsync(entity);
+                var result = Entities.Add(entity);
                 // SaveChanges as Context save changes will called with Unit of work
 
                 return result.Entity;

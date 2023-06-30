@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Hgtrg.Ecommerce.PresentationLayer.ViewModels.RequestModels
+namespace Hgtrg.Ecommerce.BusinessLayer.RequestModels
 {
     public class RegisterModel
     {

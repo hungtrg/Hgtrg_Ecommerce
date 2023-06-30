@@ -51,9 +51,11 @@ namespace Hgtrg.Ecommerce.BusinessLayer.GenericUtils
             throw new NotImplementedException();
         }
 
-        public Task<TEntity> AddAsync(TEntity entity)
+        public async Task<TEntity> AddAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            var result = _repository.Add(entity);
+            await _unitOfWork.SaveChangesAsync();
+            return result;
         }
 
         public void Remove(TEntity entity)

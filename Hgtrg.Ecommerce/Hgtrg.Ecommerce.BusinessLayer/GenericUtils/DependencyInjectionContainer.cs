@@ -11,6 +11,7 @@ namespace Hgtrg.Ecommerce.BusinessLayer.GenericUtils
         public static void InitializerDI(this IServiceCollection services)
         {
             services.AddScoped<IUnitOfWork<HgtrgEcommerceContext>, UnitOfWork<HgtrgEcommerceContext>>();
+            services.AddScoped<IJwtService, JwtService>();
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserServices, UserServices>();
