@@ -21,18 +21,16 @@ namespace Hgtrg.Ecommerce.PresentationLayer.Controllers
 
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterModel model)
+        public IActionResult Register([FromBody] RegisterModel model)
         {
             // Create new user object
             var user = _service.RegisterUser(model);
 
-            // Add user to repository and Save changes to data store
-            var result = await _service.AddAsync(user);
-            if (result == null)
+            if (user.Result == null)
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
 
-            return Ok(new Response { Status = "Success", Message = "User created successfully!" });
+            return Ok(new Response { Status = "Success", Message = "User created successfully!", Data = user.Result });
         }
 
         [HttpPost]
@@ -45,7 +43,7 @@ namespace Hgtrg.Ecommerce.PresentationLayer.Controllers
             if (user != null)
             {
                 var token = _jwtService.GenerateToken(user);
-                return Ok(token);
+                return Ok(new Response { Status = "Success", Message = "User logged in successfully!", Data = token });
             }
             return Unauthorized();
         }

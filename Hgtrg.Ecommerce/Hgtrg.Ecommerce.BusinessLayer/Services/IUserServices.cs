@@ -10,23 +10,20 @@ namespace Hgtrg.Ecommerce.BusinessLayer.Services
 {
     public interface IUserServices : IGenericService<User>
     {
-        User RegisterUser(RegisterModel model);
+        Task<User> RegisterUser(RegisterModel model);
         User SigninUser(LoginModel model);
     }
 
     public class UserServices : GenericService<User>, IUserServices
     {
-        private readonly IUserRepository _userRepository;
-        public UserServices(IUnitOfWork<HgtrgEcommerceContext> unitOfWork, IUserRepository repository) : base(unitOfWork, repository)
-        {
-            _userRepository = repository;
-        }
+        public UserServices(IUnitOfWork<HgtrgEcommerceContext> unitOfWork,
+            IUserRepository repository) : base(unitOfWork, repository) { }
 
-        public User RegisterUser(RegisterModel model)
+        public async Task<User> RegisterUser(RegisterModel model)
         {
             // Check if username already exists
-            var existedUser = _userRepository.GetUserByUsername(model.Username);
-            if (!existedUser.Count().Equals(0))
+            var existedUser = FirstOrDefault(u => u.Username.Equals(model.Username) || u.Email.Equals(model.Email));
+            if (existedUser != null)
             {
                 throw new InvalidOperationException("User with the same username already exists.");
             }
@@ -40,6 +37,7 @@ namespace Hgtrg.Ecommerce.BusinessLayer.Services
                 Role = Role.Customer.ToString(),
                 Status = Convert.ToBoolean(AccountStatus.Active)
             };
+            await AddAsync(user);
 
             return user;
         }
@@ -47,7 +45,7 @@ namespace Hgtrg.Ecommerce.BusinessLayer.Services
         public User SigninUser(LoginModel model)
         {
             // Retrieve user from repository
-            var user = _userRepository.GetUserByUsername(model.Username).FirstOrDefault();
+            var user = FirstOrDefault(u => u.Username.Equals(model.Username));
 
             if (user == null)
             {

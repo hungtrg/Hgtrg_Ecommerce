@@ -43,7 +43,7 @@ namespace Hgtrg.Ecommerce.BusinessLayer.GenericUtils
 
         public TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return _repository.FirstOrDefault(predicate);
         }
 
         public TEntity Update(TEntity entity)
