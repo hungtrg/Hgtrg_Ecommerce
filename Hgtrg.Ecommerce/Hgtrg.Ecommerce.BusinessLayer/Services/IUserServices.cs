@@ -1,5 +1,5 @@
-﻿using Hgtrg.Ecommerce.BusinessLayer.GenericUtils;
-using Hgtrg.Ecommerce.BusinessLayer.RequestModels;
+﻿using Hgtrg.Ecommerce.BusinessLayer.DTO.RequestModels;
+using Hgtrg.Ecommerce.BusinessLayer.GenericUtils;
 using Hgtrg.Ecommerce.DataLayer.DataAccess;
 using Hgtrg.Ecommerce.DataLayer.Enums;
 using Hgtrg.Ecommerce.DataLayer.Models;
@@ -24,12 +24,6 @@ namespace Hgtrg.Ecommerce.BusinessLayer.Services
 
         public User RegisterUser(RegisterModel model)
         {
-            // Validate input parameters
-            if (string.IsNullOrEmpty(model.Username) || string.IsNullOrEmpty(model.Password))
-            {
-                throw new ArgumentException("Username and password cannot be empty.");
-            }
-
             // Check if username already exists
             var existedUser = _userRepository.GetUserByUsername(model.Username);
             if (!existedUser.Count().Equals(0))

@@ -1,6 +1,6 @@
-﻿using Hgtrg.Ecommerce.BusinessLayer.GenericUtils;
-using Hgtrg.Ecommerce.BusinessLayer.RequestModels;
-using Hgtrg.Ecommerce.BusinessLayer.ResponseModels;
+﻿using Hgtrg.Ecommerce.BusinessLayer.DTO.RequestModels;
+using Hgtrg.Ecommerce.BusinessLayer.DTO.ResponseModels;
+using Hgtrg.Ecommerce.BusinessLayer.GenericUtils;
 using Hgtrg.Ecommerce.BusinessLayer.Services;
 using Microsoft.AspNetCore.Mvc;
 
