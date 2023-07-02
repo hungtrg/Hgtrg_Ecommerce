@@ -25,5 +25,5 @@ public partial class User
 
     public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
 
-    public virtual ICollection<Seller> Sellers { get; set; } = new List<Seller>();
+    public virtual Seller? Seller { get; set; }
 }

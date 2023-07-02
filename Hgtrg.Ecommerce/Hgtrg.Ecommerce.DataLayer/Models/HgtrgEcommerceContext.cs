@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace Hgtrg.Ecommerce.DataLayer.Models;
@@ -55,7 +57,7 @@ public partial class HgtrgEcommerceContext : DbContext
     {
         modelBuilder.Entity<Address>(entity =>
         {
-            entity.HasKey(e => e.AddressId).HasName("PK__Address__CAA247C84DE6980F");
+            entity.HasKey(e => e.AddressId).HasName("PK__Address__CAA247C81B112C9E");
 
             entity.ToTable("Address");
 
@@ -80,12 +82,12 @@ public partial class HgtrgEcommerceContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.Addresses)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Address__user_id__3A81B327");
+                .HasConstraintName("FK__Address__user_id__52593CB8");
         });
 
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.CategoryId).HasName("PK__Category__D54EE9B4DC2510DC");
+            entity.HasKey(e => e.CategoryId).HasName("PK__Category__D54EE9B4CD34E43B");
 
             entity.ToTable("Category");
 
@@ -98,12 +100,12 @@ public partial class HgtrgEcommerceContext : DbContext
 
             entity.HasOne(d => d.Parent).WithMany(p => p.InverseParent)
                 .HasForeignKey(d => d.ParentId)
-                .HasConstraintName("FK__Category__parent__3D5E1FD2");
+                .HasConstraintName("FK__Category__parent__534D60F1");
         });
 
         modelBuilder.Entity<Order>(entity =>
         {
-            entity.HasKey(e => e.OrderId).HasName("PK__Order__46596229670DAE96");
+            entity.HasKey(e => e.OrderId).HasName("PK__Order__46596229D9C5085C");
 
             entity.ToTable("Order");
 
@@ -128,22 +130,22 @@ public partial class HgtrgEcommerceContext : DbContext
             entity.HasOne(d => d.Address).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.AddressId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Order__address_i__4AB81AF0");
+                .HasConstraintName("FK__Order__address_i__5441852A");
 
             entity.HasOne(d => d.Seller).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.SellerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Order__seller_id__4BAC3F29");
+                .HasConstraintName("FK__Order__seller_id__5535A963");
 
             entity.HasOne(d => d.User).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Order__user_id__49C3F6B7");
+                .HasConstraintName("FK__Order__user_id__5629CD9C");
         });
 
         modelBuilder.Entity<OrderProduct>(entity =>
         {
-            entity.HasKey(e => new { e.OrderId, e.ProductId }).HasName("PK__Order_Pr__022945F68911DA5E");
+            entity.HasKey(e => new { e.OrderId, e.ProductId }).HasName("PK__Order_Pr__022945F6E71E1741");
 
             entity.ToTable("Order_Product");
 
@@ -157,17 +159,17 @@ public partial class HgtrgEcommerceContext : DbContext
             entity.HasOne(d => d.Order).WithMany(p => p.OrderProducts)
                 .HasForeignKey(d => d.OrderId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Order_Pro__order__4E88ABD4");
+                .HasConstraintName("FK__Order_Pro__order__571DF1D5");
 
             entity.HasOne(d => d.Product).WithMany(p => p.OrderProducts)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Order_Pro__produ__4F7CD00D");
+                .HasConstraintName("FK__Order_Pro__produ__5812160E");
         });
 
         modelBuilder.Entity<OrderShipping>(entity =>
         {
-            entity.HasKey(e => new { e.OrderId, e.ShippingMethodId }).HasName("PK__Order_Sh__EB96320ADCE44959");
+            entity.HasKey(e => new { e.OrderId, e.ShippingMethodId }).HasName("PK__Order_Sh__EB96320AD70968C5");
 
             entity.ToTable("Order_Shipping");
 
@@ -187,17 +189,17 @@ public partial class HgtrgEcommerceContext : DbContext
             entity.HasOne(d => d.Order).WithMany(p => p.OrderShippings)
                 .HasForeignKey(d => d.OrderId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Order_Shi__order__6383C8BA");
+                .HasConstraintName("FK__Order_Shi__order__59063A47");
 
             entity.HasOne(d => d.ShippingMethod).WithMany(p => p.OrderShippings)
                 .HasForeignKey(d => d.ShippingMethodId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Order_Shi__shipp__6477ECF3");
+                .HasConstraintName("FK__Order_Shi__shipp__59FA5E80");
         });
 
         modelBuilder.Entity<Payment>(entity =>
         {
-            entity.HasKey(e => e.PaymentId).HasName("PK__Payment__ED1FC9EAEB70A607");
+            entity.HasKey(e => e.PaymentId).HasName("PK__Payment__ED1FC9EA4BCED377");
 
             entity.ToTable("Payment");
 
@@ -217,12 +219,12 @@ public partial class HgtrgEcommerceContext : DbContext
             entity.HasOne(d => d.Order).WithMany(p => p.Payments)
                 .HasForeignKey(d => d.OrderId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Payment__order_i__52593CB8");
+                .HasConstraintName("FK__Payment__order_i__5AEE82B9");
         });
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.HasKey(e => e.ProductId).HasName("PK__Product__47027DF5A6A671F1");
+            entity.HasKey(e => e.ProductId).HasName("PK__Product__47027DF56B4B22D1");
 
             entity.ToTable("Product");
 
@@ -245,17 +247,17 @@ public partial class HgtrgEcommerceContext : DbContext
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
                 .HasForeignKey(d => d.CategoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Product__categor__4316F928");
+                .HasConstraintName("FK__Product__categor__5BE2A6F2");
 
             entity.HasOne(d => d.Seller).WithMany(p => p.Products)
                 .HasForeignKey(d => d.SellerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Product__seller___440B1D61");
+                .HasConstraintName("FK__Product__seller___5CD6CB2B");
         });
 
         modelBuilder.Entity<ProductImage>(entity =>
         {
-            entity.HasKey(e => e.ImageId).HasName("PK__Product___DC9AC955557F84AC");
+            entity.HasKey(e => e.ImageId).HasName("PK__Product___DC9AC95577B1A880");
 
             entity.ToTable("Product_Image");
 
@@ -269,12 +271,12 @@ public partial class HgtrgEcommerceContext : DbContext
             entity.HasOne(d => d.Product).WithMany(p => p.ProductImages)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Product_I__produ__46E78A0C");
+                .HasConstraintName("FK__Product_I__produ__5DCAEF64");
         });
 
         modelBuilder.Entity<Promotion>(entity =>
         {
-            entity.HasKey(e => e.PromotionId).HasName("PK__Promotio__2CB9556B1DCD95CD");
+            entity.HasKey(e => e.PromotionId).HasName("PK__Promotio__2CB9556BE89EEDD5");
 
             entity.ToTable("Promotion");
 
@@ -308,16 +310,16 @@ public partial class HgtrgEcommerceContext : DbContext
 
             entity.HasOne(d => d.Category).WithMany(p => p.Promotions)
                 .HasForeignKey(d => d.CategoryId)
-                .HasConstraintName("FK__Promotion__categ__59FA5E80");
+                .HasConstraintName("FK__Promotion__categ__5EBF139D");
 
             entity.HasOne(d => d.Product).WithMany(p => p.Promotions)
                 .HasForeignKey(d => d.ProductId)
-                .HasConstraintName("FK__Promotion__produ__59063A47");
+                .HasConstraintName("FK__Promotion__produ__5FB337D6");
         });
 
         modelBuilder.Entity<Review>(entity =>
         {
-            entity.HasKey(e => e.ReviewId).HasName("PK__Review__60883D904983BD6C");
+            entity.HasKey(e => e.ReviewId).HasName("PK__Review__60883D900B82AE4B");
 
             entity.ToTable("Review");
 
@@ -333,19 +335,21 @@ public partial class HgtrgEcommerceContext : DbContext
             entity.HasOne(d => d.Product).WithMany(p => p.Reviews)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Review__product___5535A963");
+                .HasConstraintName("FK__Review__product___60A75C0F");
 
             entity.HasOne(d => d.User).WithMany(p => p.Reviews)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Review__user_id__5629CD9C");
+                .HasConstraintName("FK__Review__user_id__619B8048");
         });
 
         modelBuilder.Entity<Seller>(entity =>
         {
-            entity.HasKey(e => e.SellerId).HasName("PK__Seller__780A0A979D4E5E00");
+            entity.HasKey(e => e.SellerId).HasName("PK__Seller__780A0A97BDEB9214");
 
             entity.ToTable("Seller");
+
+            entity.HasIndex(e => e.UserId, "UQ_Seller_user_id").IsUnique();
 
             entity.Property(e => e.SellerId).HasColumnName("seller_id");
             entity.Property(e => e.Description)
@@ -358,15 +362,15 @@ public partial class HgtrgEcommerceContext : DbContext
                 .HasColumnName("name");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Sellers)
-                .HasForeignKey(d => d.UserId)
+            entity.HasOne(d => d.User).WithOne(p => p.Seller)
+                .HasForeignKey<Seller>(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Seller__user_id__403A8C7D");
+                .HasConstraintName("FK_Seller_user_id");
         });
 
         modelBuilder.Entity<SellerProductCategory>(entity =>
         {
-            entity.HasKey(e => new { e.SellerId, e.ProductId, e.CategoryId }).HasName("PK__Seller_P__89AF63A19D05F3AA");
+            entity.HasKey(e => new { e.SellerId, e.ProductId, e.CategoryId }).HasName("PK__Seller_P__89AF63A158246595");
 
             entity.ToTable("Seller_Product_Category");
 
@@ -377,22 +381,22 @@ public partial class HgtrgEcommerceContext : DbContext
             entity.HasOne(d => d.Category).WithMany(p => p.SellerProductCategories)
                 .HasForeignKey(d => d.CategoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Seller_Pr__categ__5EBF139D");
+                .HasConstraintName("FK__Seller_Pr__categ__6477ECF3");
 
             entity.HasOne(d => d.Product).WithMany(p => p.SellerProductCategories)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Seller_Pr__produ__5DCAEF64");
+                .HasConstraintName("FK__Seller_Pr__produ__656C112C");
 
             entity.HasOne(d => d.Seller).WithMany(p => p.SellerProductCategories)
                 .HasForeignKey(d => d.SellerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Seller_Pr__selle__5CD6CB2B");
+                .HasConstraintName("FK__Seller_Pr__selle__66603565");
         });
 
         modelBuilder.Entity<ShippingMethod>(entity =>
         {
-            entity.HasKey(e => e.ShippingMethodId).HasName("PK__Shipping__DCF5023B2D932947");
+            entity.HasKey(e => e.ShippingMethodId).HasName("PK__Shipping__DCF5023BB57EA680");
 
             entity.ToTable("Shipping_Method");
 
@@ -412,7 +416,7 @@ public partial class HgtrgEcommerceContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK__User__B9BE370F912B447C");
+            entity.HasKey(e => e.UserId).HasName("PK__User__B9BE370F786DEA09");
 
             entity.ToTable("User");
 
