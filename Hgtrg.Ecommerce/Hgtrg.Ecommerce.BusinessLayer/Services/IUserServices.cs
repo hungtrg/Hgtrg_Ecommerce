@@ -10,7 +10,8 @@ namespace Hgtrg.Ecommerce.BusinessLayer.Services
 {
     public interface IUserServices : IGenericService<User>
     {
-        Task<User> RegisterUser(RegisterModel model);
+        User RegisterUser(RegisterModel model);
+        User RegisterSeller(RegisterModel model);
         User SigninUser(LoginModel model);
     }
 
@@ -19,7 +20,7 @@ namespace Hgtrg.Ecommerce.BusinessLayer.Services
         public UserServices(IUnitOfWork<HgtrgEcommerceContext> unitOfWork,
             IUserRepository repository) : base(unitOfWork, repository) { }
 
-        public async Task<User> RegisterUser(RegisterModel model)
+        public User RegisterUser(RegisterModel model)
         {
             // Check if username already exists
             var existedUser = FirstOrDefault(u => u.Username.Equals(model.Username) || u.Email.Equals(model.Email));
@@ -37,9 +38,27 @@ namespace Hgtrg.Ecommerce.BusinessLayer.Services
                 Role = Role.Customer.ToString(),
                 Status = Convert.ToBoolean(AccountStatus.Active)
             };
-            await AddAsync(user);
 
-            return user;
+            return Add(user);
+        }
+
+        public User RegisterSeller(RegisterModel model)
+        {
+            // Check if username or email already exists
+            var user = FirstOrDefault(u => u.Username.Equals(model.Username) || u.Email.Equals(model.Email));
+            if (user.Role.Equals(Role.Seller))
+            {
+                throw new InvalidOperationException("A user with the same username has already registered as a seller.");
+            }
+            if (user == null)
+            {
+                // Register new user as seller
+                user = RegisterUser(model);
+            }
+
+            // Update role to seller if user exists
+            user.Role = Role.Seller.ToString();
+            return Update(user);
         }
 
         public User SigninUser(LoginModel model)

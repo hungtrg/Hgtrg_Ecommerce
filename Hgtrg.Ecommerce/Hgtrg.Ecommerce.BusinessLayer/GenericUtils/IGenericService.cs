@@ -10,9 +10,11 @@ namespace Hgtrg.Ecommerce.BusinessLayer.GenericUtils
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
         TEntity GetById(int id);
         TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate);
+        TEntity Add(TEntity entity);
         TEntity Update(TEntity entity);
-        Task<TEntity> AddAsync(TEntity entity);
         void Remove(TEntity entity);
+        Task<TEntity> UpdateAsync(TEntity entity);
+        Task<TEntity> AddAsync(TEntity entity);
     }
 
     public class GenericService<TEntity> : IGenericService<TEntity> where TEntity : class
@@ -46,7 +48,17 @@ namespace Hgtrg.Ecommerce.BusinessLayer.GenericUtils
             return _repository.FirstOrDefault(predicate);
         }
 
+        public TEntity Add(TEntity entity)
+        {
+            return _repository.Add(entity);
+        }
+
         public TEntity Update(TEntity entity)
+        {
+            return _repository.Update(entity);
+        }
+
+        public void Remove(TEntity entity)
         {
             throw new NotImplementedException();
         }
@@ -58,9 +70,11 @@ namespace Hgtrg.Ecommerce.BusinessLayer.GenericUtils
             return result;
         }
 
-        public void Remove(TEntity entity)
+        public async Task<TEntity> UpdateAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            var result = _repository.Update(entity);
+            await _unitOfWork.SaveChangesAsync();
+            return result;
         }
     }
 }

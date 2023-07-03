@@ -2,6 +2,8 @@
 using Hgtrg.Ecommerce.BusinessLayer.DTO.ResponseModels;
 using Hgtrg.Ecommerce.BusinessLayer.GenericUtils;
 using Hgtrg.Ecommerce.BusinessLayer.Services;
+using Hgtrg.Ecommerce.DataLayer.DataAccess;
+using Hgtrg.Ecommerce.DataLayer.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hgtrg.Ecommerce.PresentationLayer.Controllers
@@ -10,27 +12,49 @@ namespace Hgtrg.Ecommerce.PresentationLayer.Controllers
     [ApiController]
     public class AuthenticateController : ControllerBase
     {
-        private readonly IUserServices _service;
         private readonly IJwtService _jwtService;
+        private readonly IUserServices _userService;
+        private readonly ISellerServices _sellerService;
+        private IUnitOfWork<HgtrgEcommerceContext> _unitOfWork;
 
-        public AuthenticateController(IUserServices service, IJwtService jwtService)
+        public AuthenticateController(IJwtService jwtService, IUserServices userService,
+            ISellerServices sellerService, IUnitOfWork<HgtrgEcommerceContext> unitOfWork)
         {
-            _service = service;
             _jwtService = jwtService;
+            _userService = userService;
+            _sellerService = sellerService;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpPost]
         [Route("register")]
-        public IActionResult Register([FromBody] RegisterModel model)
+        public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
             // Create new user object
-            var user = _service.RegisterUser(model);
+            var user = _userService.RegisterUser(model);
 
-            if (user.Result == null)
+            if (user == null)
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
 
-            return Ok(new Response { Status = "Success", Message = "User created successfully!", Data = user.Result });
+            await _unitOfWork.SaveChangesAsync();
+            return Ok(new Response { Status = "Success", Message = "User created successfully!", Data = user });
+        }
+
+        [HttpPost]
+        [Route("register-seller")]
+        public async Task<IActionResult> RegisterSeller([FromBody] RegisterModel model)
+        {
+            // Set seller role to user if existed
+            var user = _userService.RegisterSeller(model);
+            
+            var seller = _sellerService.AddSeller(user);
+            if (seller == null)
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new Response { Status = "Error", Message = "Seller creation failed! Please check user details and try again." });
+
+            await _unitOfWork.SaveChangesAsync();
+            return Ok(new Response { Status = "Success", Message = "Seller created successfully!", Data = seller });
         }
 
         [HttpPost]
@@ -38,7 +62,7 @@ namespace Hgtrg.Ecommerce.PresentationLayer.Controllers
         public IActionResult Login([FromBody] LoginModel model)
         {
             // Create new user object
-            var user = _service.SigninUser(model);
+            var user = _userService.SigninUser(model);
 
             if (user != null)
             {
