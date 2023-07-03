@@ -5,9 +5,11 @@ VisualStudioVersion = 17.6.33717.318
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hgtrg.Ecommerce.DataLayer", "Hgtrg.Ecommerce.DataLayer\Hgtrg.Ecommerce.DataLayer.csproj", "{9E99D2B2-768B-4610-AF6F-CDE504D02E9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hgtrg.Ecommerce.BusinessLayer", "Hgtrg.Ecommerce.BusinessLayer\Hgtrg.Ecommerce.BusinessLayer.csproj", "{2D53D6A2-E940-4C64-9F84-BF377C08B92E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hgtrg.Ecommerce.BusinessLayer", "Hgtrg.Ecommerce.BusinessLayer\Hgtrg.Ecommerce.BusinessLayer.csproj", "{2D53D6A2-E940-4C64-9F84-BF377C08B92E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hgtrg.Ecommerce.PresentationLayer", "Hgtrg.Ecommerce.PresentationLayer\Hgtrg.Ecommerce.PresentationLayer.csproj", "{FDEE6FDD-0988-4424-8C75-A73A6F887769}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hgtrg.Ecommerce.PresentationLayer", "Hgtrg.Ecommerce.PresentationLayer\Hgtrg.Ecommerce.PresentationLayer.csproj", "{FDEE6FDD-0988-4424-8C75-A73A6F887769}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hgtrg.Ecommerce.Client", "Hgtrg.Ecommerce.Client\Hgtrg.Ecommerce.Client.csproj", "{52C5F131-2A8B-44E6-9D92-276A1541FDDD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{FDEE6FDD-0988-4424-8C75-A73A6F887769}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDEE6FDD-0988-4424-8C75-A73A6F887769}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDEE6FDD-0988-4424-8C75-A73A6F887769}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52C5F131-2A8B-44E6-9D92-276A1541FDDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52C5F131-2A8B-44E6-9D92-276A1541FDDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52C5F131-2A8B-44E6-9D92-276A1541FDDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52C5F131-2A8B-44E6-9D92-276A1541FDDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
