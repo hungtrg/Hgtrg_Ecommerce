@@ -16,4 +16,10 @@
         Active = 1,
         Inactive = 0,
     }
+
+    public enum CategoryProduct
+    {
+        Product = 1,
+        Slider = 61,
+    }
 }

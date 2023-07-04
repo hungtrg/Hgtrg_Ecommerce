@@ -18,6 +18,12 @@ namespace Hgtrg.Ecommerce.BusinessLayer.GenericUtils
 
             services.AddScoped<ISellerRepository , SellerRepository>();
             services.AddScoped<ISellerServices, SellerServices>();
+
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ICategoryServices, CategorySevices>();
+
+            services.AddScoped<IProductRepositoy , ProductRepositry>();
+            services.AddScoped<IProductServices, ProductServices>();
         }
     }
 }

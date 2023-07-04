@@ -1,32 +1,24 @@
-﻿using Hgtrg.Ecommerce.Client.Models;
+﻿using Hgtrg.Ecommerce.BusinessLayer.Services;
+using Hgtrg.Ecommerce.DataLayer.Enums;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace Hgtrg.Ecommerce.Client.Controllers
 {
-    public class HomeController : Controller
+	public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IProductServices _productServices;
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+		public HomeController(IProductServices productServices)
+		{
+			_productServices = productServices;
+		}
 
-        public IActionResult Index()
+		public IActionResult Index()
         {
-            return View();
-        }
+            var slideProducts = _productServices.RetrieveProductsInformations(p => p.CategoryId.Equals((int)CategoryProduct.Slider)).First();
+            //var slideProducts = _productServices.RetrieveProductsInformations(p => p.CategoryId.Equals((int)CategoryProduct.Slider));
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(slideProducts);
         }
     }
 }

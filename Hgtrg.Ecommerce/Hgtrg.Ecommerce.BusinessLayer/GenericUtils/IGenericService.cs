@@ -35,7 +35,7 @@ namespace Hgtrg.Ecommerce.BusinessLayer.GenericUtils
 
         public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return _repository.Find(predicate);
         }
 
         public TEntity GetById(int id)
