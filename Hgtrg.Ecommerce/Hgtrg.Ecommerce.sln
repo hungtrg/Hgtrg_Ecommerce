@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hgtrg.Ecommerce.BusinessLay
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hgtrg.Ecommerce.PresentationLayer", "Hgtrg.Ecommerce.PresentationLayer\Hgtrg.Ecommerce.PresentationLayer.csproj", "{FDEE6FDD-0988-4424-8C75-A73A6F887769}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hgtrg.Ecommerce.Client", "Hgtrg.Ecommerce.Client\Hgtrg.Ecommerce.Client.csproj", "{52C5F131-2A8B-44E6-9D92-276A1541FDDD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hgtrg.Ecommerce.Client", "Hgtrg.Ecommerce.Client\Hgtrg.Ecommerce.Client.csproj", "{575EEF27-E314-4404-941E-D224CB6F0F8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{FDEE6FDD-0988-4424-8C75-A73A6F887769}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDEE6FDD-0988-4424-8C75-A73A6F887769}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDEE6FDD-0988-4424-8C75-A73A6F887769}.Release|Any CPU.Build.0 = Release|Any CPU
-		{52C5F131-2A8B-44E6-9D92-276A1541FDDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{52C5F131-2A8B-44E6-9D92-276A1541FDDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{52C5F131-2A8B-44E6-9D92-276A1541FDDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{52C5F131-2A8B-44E6-9D92-276A1541FDDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{575EEF27-E314-4404-941E-D224CB6F0F8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{575EEF27-E314-4404-941E-D224CB6F0F8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{575EEF27-E314-4404-941E-D224CB6F0F8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{575EEF27-E314-4404-941E-D224CB6F0F8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
